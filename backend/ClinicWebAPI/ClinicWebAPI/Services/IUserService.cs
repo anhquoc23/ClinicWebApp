@@ -1,8 +1,8 @@
 ﻿using ClinicWebAPI.Models;
 
-namespace ClinicWebAPI.Repositories
+namespace ClinicWebAPI.Services
 {
-    public interface IUserRepository
+    public interface IUserService
     {
         Task<User> GetUser(Dictionary<string, string> keywords);
     }

@@ -1,4 +1,5 @@
 using ClinicWebAPI.Configs;
+using ClinicWebAPI.Data;
 using ClinicWebAPI.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -42,6 +43,11 @@ builder.Services.AddSwaggerGen(swagger =>
 });
 
 var app = builder.Build();
+
+if (args.Length == 1 && args[0].ToLower().Equals("seeddata"))
+{
+    await Seed.SeddData(app);
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

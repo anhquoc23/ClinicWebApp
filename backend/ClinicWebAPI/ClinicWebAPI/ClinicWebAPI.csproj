@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <Folder Include="Data\Enum\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>

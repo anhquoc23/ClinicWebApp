@@ -8,11 +8,11 @@ namespace ClinicWebAPI.Models
     public class User : IdentityUser
     {
         [Required(ErrorMessage = "Họ Và Tên Đệm Không Để Trống")]
-        [StringLength(maximumLength: 255, MinimumLength = 10, ErrorMessage = "Độ Dài Của Họ Và Tên Đệm Tối Thiểu Là 10 Ký Tự Và Tối Đa 255 Ký Tự")]
+        [StringLength(maximumLength: 255, MinimumLength = 3, ErrorMessage = "Độ Dài Của Họ Và Tên Đệm Tối Thiểu Là 10 Ký Tự Và Tối Đa 255 Ký Tự")]
 
         public string FirstName { get; set; }
         [Required(ErrorMessage = "Tên Không Để Trống")]
-        [StringLength(maximumLength: 255, MinimumLength = 10, ErrorMessage = "Độ Dài Của Tên Tối Thiểu Là 10 Ký Tự Và Tối Đa 255 Ký Tự")]
+        [StringLength(maximumLength: 255, MinimumLength = 3, ErrorMessage = "Độ Dài Của Tên Tối Thiểu Là 10 Ký Tự Và Tối Đa 255 Ký Tự")]
         public string LastName { get; set; }
         public string Avatar { get; set; }
         [Required(ErrorMessage = "Địa Chỉ Không Để Trống")]

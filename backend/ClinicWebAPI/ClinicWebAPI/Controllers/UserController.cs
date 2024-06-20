@@ -66,19 +66,19 @@ namespace ClinicWebAPI.Controllers
             }
             var result = await _cloudinaryService.UploadPhotoToCloudinaryAsync(user.Image);
             user.Avatar = result.Url.ToString();
-            User userRegister = new User
-            {
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
-                UserName = user.UserName,
-                PhoneNumber = user.PhoneNumber,
-                Avatar = user.Avatar,
-                Address = user.Address
-            };
-            var addResult = await _userService.AddOrUpdateAsync(userRegister, user.Password, Models.User.UserRole["PATIENT"]);
+            //User userRegister = new User
+            //{
+            //    FirstName = user.FirstName,
+            //    LastName = user.LastName,
+            //    Email = user.Email,
+            //    UserName = user.UserName,
+            //    PhoneNumber = user.PhoneNumber,
+            //    Avatar = user.Avatar,
+            //    Address = user.Address
+            //};
+            var addResult = await _userService.AddOrUpdateAsync(user, user.Password, Models.User.UserRole["PATIENT"]);
 
-            return addResult ? Ok(userRegister) : BadRequest(ModelState);
+            return addResult ? Ok("Thêm Thành Công") : BadRequest(ModelState);
         }
     }
 }

@@ -59,6 +59,9 @@ builder.Services.AddAuthentication(options =>
 // Service Map Json To Object
 builder.Services.Configure<CloudinarySetting>(builder.Configuration.GetSection("Cloudinary"));
 
+// Auto Mapper
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 // Service Dependency Injection
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();

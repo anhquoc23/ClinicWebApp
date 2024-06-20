@@ -6,7 +6,7 @@ namespace ClinicWebAPI.Dtos
     public class UserDto
     {
         //[AllowNull]
-        public string? Id { get; set; }
+        //public string? Id { get; set; }
         [Required(ErrorMessage = "Username Đệm Không Để Trống")]
         public string UserName { get; set; }
         [Required(ErrorMessage = "Mật Khẩu Đệm Không Để Trống")]
@@ -30,5 +30,10 @@ namespace ClinicWebAPI.Dtos
         public string Email { get; set; }
         public IFormFile Image { get; set; }
 
+
+        //public UserDto()
+        //{
+        //    Id = Guid.NewGuid().ToString();
+        //}
     }
 }

@@ -1,4 +1,6 @@
-﻿using ClinicWebAPI.Models;
+﻿using AutoMapper;
+using ClinicWebAPI.Dtos;
+using ClinicWebAPI.Models;
 using ClinicWebAPI.Repositories;
 
 namespace ClinicWebAPI.Services.Implements
@@ -6,15 +8,18 @@ namespace ClinicWebAPI.Services.Implements
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(IUserRepository userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
+            _mapper = mapper;
         }
 
-        public async Task<bool> AddOrUpdateAsync(User user, string password, string role)
+        public async Task<bool> AddOrUpdateAsync(UserDto user, string password, string role)
         {
-            return await _userRepository.AddOrUpdateAsync(user, password, role);
+            var u = _mapper.Map<User>(user);
+            return await _userRepository.AddOrUpdateAsync(u, password, role);
         }
 
         public async Task<User> FindByUserNameAsync(string userName)

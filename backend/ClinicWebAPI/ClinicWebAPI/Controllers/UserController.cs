@@ -31,29 +31,27 @@ namespace ClinicWebAPI.Controllers
             {
                 return BadRequest(ModelState);
             }
-
-            Dictionary<string, string> keyword = new Dictionary<string, string>
-            {
-                {"username", loginUser.Username},
-            };
-            var user = await _userService.GetUser(keyword);
+            var user = await _userService.FindByUserNameAsync(loginUser.Username);
             if (user == null) return Unauthorized("Username không tồn tại");
 
-            var result = await _signInManager.PasswordSignInAsync(user, loginUser.Password, false, false);
+            var result = await _signInManager.PasswordSignInAsync(user, loginUser.Password, true, false);
             return result.Succeeded ? Ok(_jwtService.CreateToken(user)) : BadRequest("Mật Khẩu Không Chính Xác");
 
         }
 
         [HttpGet("current-user")]
         [Authorize]
+        [ProducesResponseType(200)]
         public async Task<IActionResult> GetCurrentUser()
         {
             var username = User.Identity.Name;
-            Dictionary<string, string> keyword = new Dictionary<string, string>
+            Console.WriteLine("test");
+            Console.WriteLine(username);
+            if (username == null || username == "")
             {
-                {"username", username},
-            };
-            var user = await _userService.GetUser(keyword);
+                Console.WriteLine("Lỗi Username");
+            }
+            var user = await _userService.FindByUserNameAsync(username);
             return Ok(user);
         }
 

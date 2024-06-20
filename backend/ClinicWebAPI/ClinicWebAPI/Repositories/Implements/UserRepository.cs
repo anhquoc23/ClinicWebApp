@@ -13,6 +13,13 @@ namespace ClinicWebAPI.Repositories.Implements
         {
             _dataContext = dataContext;
         }
+
+        public async Task<User> FindByUserNameAsync(string userName)
+        {
+            var user = await _dataContext.Users.FirstOrDefaultAsync(x => x.UserName == userName);
+            return user;
+        }
+
         public async Task<User> GetUser(Dictionary<string, string> keywords)
         {
             if (keywords.ContainsKey("username")) {

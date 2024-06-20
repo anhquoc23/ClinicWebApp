@@ -11,6 +11,12 @@ namespace ClinicWebAPI.Services.Implements
         {
             _userRepository = userRepository;
         }
+
+        public async Task<User> FindByUserNameAsync(string userName)
+        {
+            return await _userRepository.FindByUserNameAsync(userName);
+        }
+
         public async Task<User> GetUser(Dictionary<string, string> keywords)
         {
             return await _userRepository.GetUser(keywords);

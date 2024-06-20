@@ -22,13 +22,12 @@ namespace ClinicWebAPI.Interfaces.Implements
             var Claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.GivenName, user.UserName),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim(JwtRegisteredClaimNames.Name, user.FirstName + ' ' +  user.LastName)
+                new Claim(JwtRegisteredClaimNames.Name, user.UserName),
+                new Claim(ClaimTypes.Name, user.UserName),
             };
 
             // Create Token
-            var creds = new SigningCredentials(_symmetricSecurityKey, SecurityAlgorithms.HmacSha256Signature);
-
+            var creds = new SigningCredentials(_symmetricSecurityKey, SecurityAlgorithms.HmacSha512Signature);
             var tokenDescriptors = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(Claims),

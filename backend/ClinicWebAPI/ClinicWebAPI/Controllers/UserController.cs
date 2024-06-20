@@ -15,15 +15,17 @@ namespace ClinicWebAPI.Controllers
         private readonly IUserService _userService;
         private readonly SignInManager<User> _signInManager;
         private readonly IJwtService _jwtService;
+        private readonly ICloudinaryService _cloudinaryService;
 
-        public UserController(IUserService userService, SignInManager<User> signInManager, IJwtService jwtService)
+        public UserController(IUserService userService, SignInManager<User> signInManager, IJwtService jwtService, ICloudinaryService cloudinaryService)
         {
             _userService = userService;
             _signInManager = signInManager;
             _jwtService = jwtService;
+            _cloudinaryService = cloudinaryService;
         }
 
-        [HttpPost("token")]
+        [HttpPost("token/")]
         [ProducesResponseType(200)]
         public async Task<IActionResult> GetToken([FromBody] LoginDto loginUser)
         {
@@ -39,7 +41,7 @@ namespace ClinicWebAPI.Controllers
 
         }
 
-        [HttpGet("current-user")]
+        [HttpGet("current-user/")]
         [Authorize]
         [ProducesResponseType(200)]
         public async Task<IActionResult> GetCurrentUser()
@@ -55,5 +57,28 @@ namespace ClinicWebAPI.Controllers
             return Ok(user);
         }
 
+        [HttpPost("addorchange/")]
+        public async Task<IActionResult> AddPatient([FromQuery] UserDto user)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var result = await _cloudinaryService.UploadPhotoToCloudinaryAsync(user.Image);
+            user.Avatar = result.Url.ToString();
+            User userRegister = new User
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                UserName = user.UserName,
+                PhoneNumber = user.PhoneNumber,
+                Avatar = user.Avatar,
+                Address = user.Address
+            };
+            var addResult = await _userService.AddOrUpdateAsync(userRegister, user.Password, Models.User.UserRole["PATIENT"]);
+
+            return addResult ? Ok(userRegister) : BadRequest(ModelState);
+        }
     }
 }

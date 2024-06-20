@@ -12,6 +12,11 @@ namespace ClinicWebAPI.Services.Implements
             _userRepository = userRepository;
         }
 
+        public async Task<bool> AddOrUpdateAsync(User user, string password, string role)
+        {
+            return await _userRepository.AddOrUpdateAsync(user, password, role);
+        }
+
         public async Task<User> FindByUserNameAsync(string userName)
         {
             return await _userRepository.FindByUserNameAsync(userName);

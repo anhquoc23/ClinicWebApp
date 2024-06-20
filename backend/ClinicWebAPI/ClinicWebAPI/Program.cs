@@ -7,6 +7,7 @@ using ClinicWebAPI.Repositories;
 using ClinicWebAPI.Repositories.Implements;
 using ClinicWebAPI.Services;
 using ClinicWebAPI.Services.Implements;
+using ClinicWebAPI.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -55,10 +56,15 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+// Service Map Json To Object
+builder.Services.Configure<CloudinarySetting>(builder.Configuration.GetSection("Cloudinary"));
+
 // Service Dependency Injection
+builder.Services.AddScoped<IJwtService, JwtService>();
+builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IJwtService, JwtService>();
+
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

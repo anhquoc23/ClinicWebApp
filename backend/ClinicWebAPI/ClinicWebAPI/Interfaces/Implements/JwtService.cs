@@ -27,7 +27,7 @@ namespace ClinicWebAPI.Interfaces.Implements
             };
 
             // Create Token
-            var creds = new SigningCredentials(_symmetricSecurityKey, SecurityAlgorithms.HmacSha512Signature);
+            var creds = new SigningCredentials(_symmetricSecurityKey, SecurityAlgorithms.HmacSha256Signature);
             var tokenDescriptors = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(Claims),

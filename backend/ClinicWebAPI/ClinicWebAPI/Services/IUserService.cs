@@ -7,6 +7,9 @@ namespace ClinicWebAPI.Services
     {
         Task<User> GetUser(Dictionary<string, string> keywords);
         Task<User> FindByUserNameAsync(string userName);
-        Task<bool> AddOrUpdateAsync(UserDto user, string password, string role);
+        Task<UserDto> FindByIdAsync(string id);
+        Task<UserDto> AddAsync(UserDto user, string password, string role);
+        Task<UserDto> UpdateAsync(UpdateUserDto user);
+        Task<bool> DeleteAsync(string id);
     }
 }

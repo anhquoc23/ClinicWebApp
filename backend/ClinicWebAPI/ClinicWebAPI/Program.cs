@@ -1,12 +1,17 @@
+using ClinicWebAPI.Attributes;
 using ClinicWebAPI.Configs;
 using ClinicWebAPI.Data;
 using ClinicWebAPI.Interfaces;
 using ClinicWebAPI.Interfaces.Implements;
 using ClinicWebAPI.Models;
 using ClinicWebAPI.Repositories;
+using ClinicWebAPI.Repositories.Identity;
 using ClinicWebAPI.Repositories.Implements;
+using ClinicWebAPI.Repositories.Implements.Identity;
 using ClinicWebAPI.Services;
+using ClinicWebAPI.Services.Identity;
 using ClinicWebAPI.Services.Implements;
+using ClinicWebAPI.Services.Implements.Identity;
 using ClinicWebAPI.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -41,8 +46,8 @@ builder.Services.AddAuthentication(options =>
     options.DefaultChallengeScheme =
     options.DefaultForbidScheme =
     options.DefaultScheme =
-    options.DefaultSignOutScheme =
-    options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultSignInScheme =
+    options.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
@@ -54,6 +59,15 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SignInKey"]))
     };
+
+    
+});
+
+// Service Policy
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("admin", policy => policy.RequireRole("ADMIN"));
+    options.AddPolicy("patient", policy => policy.RequireRole("PATIENT"));
 });
 
 // Service Map Json To Object
@@ -67,6 +81,9 @@ builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IRoleService, RoleService>();
+//builder.Services.AddScoped<AuthorizationAttribute>();
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

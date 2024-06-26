@@ -6,7 +6,10 @@ namespace ClinicWebAPI.Repositories
     {
         Task<User> GetUser(Dictionary<string, string> keywords);
         Task<User> FindByUserNameAsync(string userName);
-        Task<bool> AddOrUpdateAsync(User user, string password, string role);
+        Task<User> FindByIdAsync(string id);
+        Task<User> AddAsync(User user, string password, string role);
+        Task<User> UpdateAsync(User user);
+        Task<bool> DeleteAsync(string id);
         
     }
 }

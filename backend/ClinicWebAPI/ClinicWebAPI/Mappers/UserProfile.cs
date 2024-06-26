@@ -12,6 +12,7 @@ namespace ClinicWebAPI.Mappers
         { 
             CreateMap<User, UserDto>();
             CreateMap<UserDto, User>().ForMember(des => des.PhoneNumber, act => act.MapFrom(src => src.PhoneNumber));
+            CreateMap<UpdateUserDto, User>().ForMember(des => des.PhoneNumber, act => act.MapFrom(src => src.PhoneNumber));
         }
     }
 }

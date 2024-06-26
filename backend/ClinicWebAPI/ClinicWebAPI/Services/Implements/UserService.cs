@@ -2,6 +2,7 @@
 using ClinicWebAPI.Dtos;
 using ClinicWebAPI.Models;
 using ClinicWebAPI.Repositories;
+using ClinicWebAPI.Repositories.Identity;
 
 namespace ClinicWebAPI.Services.Implements
 {
@@ -9,17 +10,37 @@ namespace ClinicWebAPI.Services.Implements
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
-
-        public UserService(IUserRepository userRepository, IMapper mapper)
+        private IRoleRepository _roleRepository;
+        public UserService(IUserRepository userRepository, IMapper mapper, IRoleRepository roleRepository)
         {
             _userRepository = userRepository;
             _mapper = mapper;
+            _roleRepository = roleRepository;
         }
 
-        public async Task<bool> AddOrUpdateAsync(UserDto user, string password, string role)
+        public async Task<UserDto> AddAsync(UserDto user, string password, string role)
         {
             var u = _mapper.Map<User>(user);
-            return await _userRepository.AddOrUpdateAsync(u, password, role);
+            var result = await _userRepository.AddAsync(u, password, role);
+            return result == null ? null : _mapper.Map<UserDto>(result);
+        }
+
+        public Task<bool> DeleteAsync(string id)
+        {
+            return _userRepository.DeleteAsync(id);
+        }
+
+        public async Task<UserDto> FindByIdAsync(string id)
+        {
+            var user = await _userRepository.FindByIdAsync(id);
+            Console.WriteLine("------------------------role----------------");
+            var roles = await _roleRepository.FindByUser(user);
+            foreach (var role in roles)
+            {
+                Console.WriteLine(role);
+            }
+            Console.WriteLine("------------------------end role----------------");
+            return _mapper.Map<UserDto>(user);
         }
 
         public async Task<User> FindByUserNameAsync(string userName)
@@ -30,6 +51,13 @@ namespace ClinicWebAPI.Services.Implements
         public async Task<User> GetUser(Dictionary<string, string> keywords)
         {
             return await _userRepository.GetUser(keywords);
+        }
+
+        public async Task<UserDto> UpdateAsync(UpdateUserDto user)
+        {
+            var u = _mapper.Map<User>(user);
+            var result = await _userRepository.UpdateAsync(u);
+            return result == null ? null : _mapper.Map<UserDto>(result);
         }
     }
 }

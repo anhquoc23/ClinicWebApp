@@ -1,9 +1,8 @@
 ﻿using ClinicWebAPI.Models;
-using Microsoft.AspNetCore.Identity;
 
-namespace ClinicWebAPI.Repositories.Identity
+namespace ClinicWebAPI.Services.Identity
 {
-    public interface IRoleRepository
+    public interface IRoleService
     {
         Task<bool> AddRole(string roleName);
         Task<List<string>> FindByUser(User user);

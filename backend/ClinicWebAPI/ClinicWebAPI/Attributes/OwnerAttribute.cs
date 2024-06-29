@@ -21,8 +21,6 @@ namespace ClinicWebAPI.Attributes
             if (isId)
             {
                 var id = context.ActionArguments["id"];
-                Console.WriteLine("tes--------------------------------------------");
-                Console.WriteLine(id);
                 var user = await _userService.FindByUserNameAsync(context.HttpContext.User.Identity.Name);
 
                 Console.WriteLine(user.Id);

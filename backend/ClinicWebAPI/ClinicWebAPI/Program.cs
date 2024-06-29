@@ -1,6 +1,7 @@
 using ClinicWebAPI.Attributes;
 using ClinicWebAPI.Configs;
 using ClinicWebAPI.Data;
+using ClinicWebAPI.Data.SeedData;
 using ClinicWebAPI.Interfaces;
 using ClinicWebAPI.Interfaces.Implements;
 using ClinicWebAPI.Models;
@@ -83,7 +84,8 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IRoleService, RoleService>();
-//builder.Services.AddScoped<AuthorizationAttribute>();
+builder.Services.AddScoped<IMedicineRepository, MedicineRepository>();
+builder.Services.AddScoped<IMedicineService, MedicineService>();
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -133,7 +135,7 @@ var app = builder.Build();
 
 if (args.Length == 1 && args[0].ToLower().Equals("seeddata"))
 {
-    await Seed.SeddData(app);
+    await SeedCategory.CategorySeed(app);
 }
 
 // Configure the HTTP request pipeline.

@@ -35,10 +35,6 @@ namespace ClinicWebAPI.Repositories.Implements.Identity
         {
             var roles = await _userManager.GetRolesAsync(user);
             var listRoles = roles.ToList();
-            foreach(var roleItem in listRoles)
-            {
-                Console.WriteLine(roleItem);
-            }
             return listRoles.Contains(role);
         }
     }

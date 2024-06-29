@@ -17,7 +17,6 @@ namespace ClinicWebAPI.Models
         public string Avatar { get; set; }
         [Required(ErrorMessage = "Địa Chỉ Không Để Trống")]
         public string Address { get; set; }
-        public bool IsActive { get; set; }
 
 
         // One To Many
@@ -38,10 +37,5 @@ namespace ClinicWebAPI.Models
             { "NURSE", "NURSE" },
             { "PATIENT", "PATIENT" }
         };
-
-        public User() 
-        { 
-            this.IsActive = true;
-        }
     }
 }

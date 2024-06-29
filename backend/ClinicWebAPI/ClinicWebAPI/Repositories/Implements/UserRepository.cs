@@ -34,8 +34,6 @@ namespace ClinicWebAPI.Repositories.Implements
             var user = await this._dataContext.Users.FindAsync(id);
             if (user != null)
             {
-                Console.WriteLine("____________________________________");
-                Console.WriteLine(user.UserName);
                 var lockoutEndDate = DateTime.UtcNow.AddYears(100);
                 var result = await _userManager.SetLockoutEndDateAsync(user, lockoutEndDate);
                 return result.Succeeded;

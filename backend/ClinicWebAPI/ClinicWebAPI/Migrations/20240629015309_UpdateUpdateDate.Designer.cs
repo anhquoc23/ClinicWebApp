@@ -3,6 +3,7 @@ using System;
 using ClinicWebAPI.Configs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClinicWebAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240629015309_UpdateUpdateDate")]
+    partial class UpdateUpdateDate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -145,7 +148,9 @@ namespace ClinicWebAPI.Migrations
                         .HasColumnType("varchar(255)");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime(6)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValue(new DateTime(2024, 6, 29, 8, 53, 6, 910, DateTimeKind.Local).AddTicks(4854));
 
                     b.Property<string>("DoctorId")
                         .IsRequired()
@@ -185,7 +190,9 @@ namespace ClinicWebAPI.Migrations
                         .HasColumnType("varchar(255)");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime(6)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValue(new DateTime(2024, 6, 29, 8, 53, 6, 910, DateTimeKind.Local).AddTicks(2223));
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("tinyint(1)");
@@ -207,7 +214,9 @@ namespace ClinicWebAPI.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("datetime(6)");
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValue(new DateTime(2024, 6, 29, 8, 53, 6, 910, DateTimeKind.Local).AddTicks(2971));
 
                     b.HasKey("Id");
 

@@ -30,15 +30,13 @@ namespace ClinicWebAPI.Configs
             builder.Entity<Medicine>()
                 .HasIndex(e => e.Name).IsUnique();
 
-            builder.Entity<Medicine>()
-                .Property(e => e.CreatedDate)
-                .HasDefaultValue(DateTime.Now);
+            //builder.Entity<Medicine>()
+            //    .Property(e => e.CreatedDate)
+            //    .HasDefaultValue(DateTime.Now).ValueGeneratedOnAdd();
 
-            builder.Entity<Medicine>()
-                .Property(e => e.UpdatedDate)
-                .HasDefaultValue(DateTime.Now)
-                .ValueGeneratedOnUpdate()
-                .HasDefaultValue(DateTime.Now);
+            //builder.Entity<Medicine>()
+            //    .Property(e => e.UpdatedDate)
+            //    .HasDefaultValue(DateTime.UtcNow);
 
             // Entity Category
             builder.Entity<Category>()
@@ -57,9 +55,9 @@ namespace ClinicWebAPI.Configs
                 .HasIndex(e => e.Name).IsUnique();
 
             // Entity Medical Record
-            builder.Entity<MedicalRecord>()
-                .Property(e => e.CreatedDate)
-                .HasDefaultValue(DateTime.Now);
+            //builder.Entity<MedicalRecord>()
+            //    .Property(e => e.CreatedDate)
+            //    .HasDefaultValue(DateTime.Now);
 
             // Entity IdentityUserLogin
             builder.Entity<IdentityUserLogin<string>>().HasKey(e => new { e.LoginProvider, e.ProviderKey });

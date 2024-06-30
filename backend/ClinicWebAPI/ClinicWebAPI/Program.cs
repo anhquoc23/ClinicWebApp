@@ -133,9 +133,14 @@ builder.Services.AddSwaggerGen(swagger =>
 
 var app = builder.Build();
 
-if (args.Length == 1 && args[0].ToLower().Equals("seeddata"))
+//if (args.Length == 1 && args[0].ToLower().Equals("seeddata"))
+//{
+//    await SeedCategory.CategorySeed(app);
+//}
+
+if (args.Length == 1 && args[0].ToLower().Equals("nurse"))
 {
-    await SeedCategory.CategorySeed(app);
+    await SeedNurse.SeedUser(app);
 }
 
 // Configure the HTTP request pipeline.

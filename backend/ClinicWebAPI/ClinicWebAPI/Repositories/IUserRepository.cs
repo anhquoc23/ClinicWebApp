@@ -10,6 +10,10 @@ namespace ClinicWebAPI.Repositories
         Task<User> AddAsync(User user, string password, string role);
         Task<User> UpdateAsync(User user);
         Task<bool> DeleteAsync(string id);
+        Task<ICollection<User>> GetAllAsync(int page = 1);
+        Task<ICollection<User>> FindByRoleAsync(string role, int page = 1);
+        Task<ICollection<User>> FindByNameAsync(string name, int page = 1);
+        Task<int> CountUserAsync();
         
     }
 }

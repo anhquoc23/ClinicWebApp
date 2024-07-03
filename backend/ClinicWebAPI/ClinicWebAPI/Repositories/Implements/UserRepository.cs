@@ -1,5 +1,6 @@
 ﻿
 using ClinicWebAPI.Configs;
+using ClinicWebAPI.Data.Enum;
 using ClinicWebAPI.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -10,11 +11,13 @@ namespace ClinicWebAPI.Repositories.Implements
     {
         private readonly DataContext _dataContext;
         private readonly UserManager<User> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public UserRepository(DataContext dataContext, UserManager<User> userManager)
+        public UserRepository(DataContext dataContext, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
             _dataContext = dataContext;
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         public async Task<User> AddAsync(User user, string password, string? role)
@@ -27,6 +30,11 @@ namespace ClinicWebAPI.Repositories.Implements
                 return user;
             }
             return null;
+        }
+
+        public async Task<int> CountUserAsync()
+        {
+            return await _dataContext.Users.Where(user => user.LockoutEnd == null).CountAsync();
         }
 
         public async Task<bool> DeleteAsync(string id)
@@ -46,10 +54,32 @@ namespace ClinicWebAPI.Repositories.Implements
             return await _dataContext.Users.FindAsync(id);
         }
 
+        public async Task<ICollection<User>> FindByNameAsync(string name, int page = 1)
+        {
+            return await _dataContext.Users.Where(user => user.LockoutEnd == null 
+                                                && (user.FirstName.Contains(name) || user.LastName.Contains(name)))
+                                                .Skip((page - 1) * StaticEnum.PAGE_SIZE).Take(StaticEnum.PAGE_SIZE)
+                                                .ToListAsync();
+        }
+
+        public async Task<ICollection<User>> FindByRoleAsync(string role, int page = 1)
+        {
+            var users = await _userManager.GetUsersInRoleAsync(role);
+            return users.Skip((page - 1) * StaticEnum.PAGE_SIZE).Take(StaticEnum.PAGE_SIZE).ToList();
+        }
+
         public async Task<User> FindByUserNameAsync(string userName)
         {
             var user = await _dataContext.Users.FirstOrDefaultAsync(x => x.UserName == userName);
             return user;
+        }
+
+        public async Task<ICollection<User>> GetAllAsync(int page = 1)
+        {
+            var users = await _dataContext.Users.Where(user => user.LockoutEnd == null)
+                                                .Take(StaticEnum.PAGE_SIZE).Skip((page - 1) * StaticEnum.PAGE_SIZE)
+                                                .ToListAsync();
+            return users;
         }
 
         public async Task<User> GetUser(Dictionary<string, string> keywords)

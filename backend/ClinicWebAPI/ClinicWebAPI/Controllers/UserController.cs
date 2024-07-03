@@ -1,4 +1,5 @@
 ﻿using ClinicWebAPI.Attributes;
+using ClinicWebAPI.Data.Enum;
 using ClinicWebAPI.Dtos;
 using ClinicWebAPI.Interfaces;
 using ClinicWebAPI.Models;
@@ -117,6 +118,36 @@ namespace ClinicWebAPI.Controllers
         {
             var result = await _userService.DeleteAsync(id);
             return result ? NoContent() : BadRequest("User Is Not Correct");
+        }
+
+        [HttpGet("list/")]
+        public async Task<IActionResult> List([FromQuery] Dictionary<string, string>? map)
+        {
+            ICollection<UserDto> users = null;
+            int page = 1;
+            if (map != null)
+            {
+                if (map.ContainsKey("page"))
+                {
+                    int count = await _userService.CountUserAsync();
+                    if (page > count / StaticEnum.PAGE_SIZE)
+                    {
+                        return BadRequest("Page is not valid");
+                    }
+                    page = int.Parse(map["page"]);
+                }
+                if (map.ContainsKey("name"))
+                    users = await _userService.FindByNameAsync(map["name"], page);
+                else if (map.ContainsKey("role"))
+                {
+                    users = await _userService.FindByRoleAsync(map["role"], page);
+                }
+                else
+                    return BadRequest("Parameters Is Not Valid");
+            }
+            else
+                users = await _userService.GetAllAsync(page);
+            return Ok(users);
         }
     }
 }

@@ -3,6 +3,7 @@ using ClinicWebAPI.Dtos;
 using ClinicWebAPI.Models;
 using ClinicWebAPI.Repositories;
 using ClinicWebAPI.Repositories.Identity;
+using CloudinaryDotNet.Actions;
 
 namespace ClinicWebAPI.Services.Implements
 {
@@ -25,6 +26,11 @@ namespace ClinicWebAPI.Services.Implements
             return result == null ? null : _mapper.Map<UserDto>(result);
         }
 
+        public async Task<int> CountUserAsync()
+        {
+            return await _userRepository.CountUserAsync();
+        }
+
         public Task<bool> DeleteAsync(string id)
         {
             return _userRepository.DeleteAsync(id);
@@ -43,9 +49,28 @@ namespace ClinicWebAPI.Services.Implements
             return _mapper.Map<UserDto>(user);
         }
 
+        public async Task<ICollection<UserDto>> FindByNameAsync(string name, int page = 1)
+        {
+            var users = await _userRepository.FindByNameAsync(name, page);
+            return _mapper.Map<ICollection<UserDto>>(users);
+        }
+
+        public async Task<ICollection<UserDto>> FindByRoleAsync(string role, int page = 1)
+        {
+            var users = await _userRepository.FindByRoleAsync(role, page);
+            return _mapper.Map<ICollection<UserDto>>(users);
+        }
+
         public async Task<User> FindByUserNameAsync(string userName)
         {
             return await _userRepository.FindByUserNameAsync(userName);
+        }
+
+        public async Task<ICollection<UserDto>> GetAllAsync(int page = 1)
+        {
+            var users = await _userRepository.GetAllAsync(page);
+            var userDtos = _mapper.Map<ICollection<UserDto>>(users);
+            return userDtos;
         }
 
         public async Task<User> GetUser(Dictionary<string, string> keywords)

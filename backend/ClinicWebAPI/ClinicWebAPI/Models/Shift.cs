@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ClinicWebAPI.Models
@@ -14,11 +15,11 @@ namespace ClinicWebAPI.Models
 
         [Required(ErrorMessage = "Thời Gian Bắt Đầu Không Để Trống")]
         [DataType(DataType.Time)]
-        public DateTime TimeStart { get; set; }
+        public TimeSpan TimeStart { get; set; }
 
         [Required(ErrorMessage = "Thời Gian Kế Thúc Không Để Trống")]
         [DataType(DataType.Time)]
-        public DateTime TimeEnd { get; set; }
+        public TimeSpan TimeEnd { get; set; }
 
         // One To Many
         ICollection<Schedule> Schedules { get; set; }

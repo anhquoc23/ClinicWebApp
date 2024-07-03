@@ -86,6 +86,8 @@ builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IMedicineRepository, MedicineRepository>();
 builder.Services.AddScoped<IMedicineService, MedicineService>();
+builder.Services.AddScoped<IScheduleRepository, ScheduleRepository>();
+builder.Services.AddScoped<IScheduleService, ScheduleService>();
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -133,14 +135,29 @@ builder.Services.AddSwaggerGen(swagger =>
 
 var app = builder.Build();
 
-//if (args.Length == 1 && args[0].ToLower().Equals("seeddata"))
-//{
-//    await SeedCategory.CategorySeed(app);
-//}
-
-if (args.Length == 1 && args[0].ToLower().Equals("nurse"))
+if (args.Length == 1)
 {
-    await SeedNurse.SeedUser(app);
+    switch (args[0])
+    {
+        case "seeddata":
+            await SeedCategory.CategorySeed(app);
+            break;
+        case "patient":
+            await SeedPatient.SeedUser(app);
+            break;
+        case "doctor":
+            await SeedDoctor.SeedUser(app);
+            break;
+        case "nurse":
+            await SeedNurse.SeedUser(app);
+            break;
+        case "shift":
+            await Seed.SeedShift(app);
+            break;
+        case "room":
+            await Seed.SeedRoom(app);
+            break;
+    }
 }
 
 // Configure the HTTP request pipeline.

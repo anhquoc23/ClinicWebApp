@@ -10,7 +10,7 @@ namespace ClinicWebAPI.Mappers
         {
             CreateMap<Schedule, ScheduleViewDto>().ForMember(des => des.TimeStart, act => act.MapFrom(src => src.Shift.TimeStart))
                                                     .ForMember(des => des.TimeEnd, act => act.MapFrom(src => src.Shift.TimeEnd))
-                                                    .ForMember(des => des.EmployeeName, act => act.MapFrom(src => $"{src.User.FirstName} ${src.User.LastName}"));
+                                                    .ForMember(des => des.EmployeeName, act => act.MapFrom(src => $"{src.User.FirstName} {src.User.LastName}"));
             CreateMap<ScheduleViewDto, Schedule>();
         }
     }

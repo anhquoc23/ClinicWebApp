@@ -17,10 +17,14 @@ namespace ClinicWebAPI.Controllers
         {
             _scheduleService = scheduleService;
         }
-        //public IActionResult Index()
-        //{
-        //    return View();
-        //}
+        [HttpGet]
+        public async Task<IActionResult> Index(DateTime ?query)
+        {
+            if (query == null)
+                query = DateTime.Now;
+            var schedules = await _scheduleService.GetAllAsync((DateTime)query);
+            return Ok(schedules);
+        }
 
         [HttpPost("add/")]
         [Authorization("ADMIN")]

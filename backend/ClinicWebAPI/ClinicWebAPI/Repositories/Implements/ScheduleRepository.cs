@@ -1,6 +1,7 @@
 ﻿using ClinicWebAPI.Configs;
 using ClinicWebAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using MySqlX.XDevAPI.Common;
 
 namespace ClinicWebAPI.Repositories.Implements
 {
@@ -24,9 +25,11 @@ namespace ClinicWebAPI.Repositories.Implements
             if (dateTime == null)
                 dateTime = DateTime.Now;
 
-            var schedules = await _dataContext.Schedules.Where(schedule => schedule.DateShift.CompareTo(dateTime) == 0)
-                                    .OrderBy(o => o.Shift.TimeStart).ToListAsync();
-            return schedules;
+            var schedules = await _dataContext.Schedules.Where(schedule => schedule.DateShift.Date == dateTime.Date)
+                                    .OrderBy(o => o.Shift.TimeStart)
+                                    .Include(user => user.User).Include(room => room.Room).Include(shift => shift.Shift)
+                                    .ToListAsync();
+            return (ICollection<Schedule>)schedules;
         }
     }
 }

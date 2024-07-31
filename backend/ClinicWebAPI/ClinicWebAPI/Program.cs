@@ -88,6 +88,8 @@ builder.Services.AddScoped<IMedicineRepository, MedicineRepository>();
 builder.Services.AddScoped<IMedicineService, MedicineService>();
 builder.Services.AddScoped<IScheduleRepository, ScheduleRepository>();
 builder.Services.AddScoped<IScheduleService, ScheduleService>();
+builder.Services.AddScoped<ISpecializationRepository, SpecializationRepository>();
+builder.Services.AddScoped<ISpecializationService, SpecializationService>();
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -156,6 +158,9 @@ if (args.Length == 1)
             break;
         case "room":
             await Seed.SeedRoom(app);
+            break;
+        case "specialization":
+            await SeedSpecialization.SpecializationSeed(app);
             break;
     }
 }

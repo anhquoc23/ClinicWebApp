@@ -10,7 +10,7 @@ namespace ClinicWebAPI.Models
         public string Id { get; set; }
 
         [Required(ErrorMessage = "Tên Khoa Không Để Trống")]
-        [StringLength(10, MinimumLength = 255, ErrorMessage = "Tên Khoa Phải Chứa Tối Thiểu 10 Ký Tự Và Tối Đa 255 Ký Tự")]
+        [StringLength(255, MinimumLength = 10, ErrorMessage = "Tên Khoa Phải Chứa Tối Thiểu 10 Ký Tự Và Tối Đa 255 Ký Tự")]
         public string Name { get; set; }
 
         public bool IsActive { get; set; }

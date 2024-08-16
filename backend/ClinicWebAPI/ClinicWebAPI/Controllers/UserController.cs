@@ -20,14 +20,15 @@ namespace ClinicWebAPI.Controllers
         private readonly IJwtService _jwtService;
         private readonly ICloudinaryService _cloudinaryService;
         private readonly IRoleService _roleService;
-
-        public UserController(IUserService userService, SignInManager<User> signInManager, IJwtService jwtService, ICloudinaryService cloudinaryService, IRoleService roleService)
+        private readonly IDoctorService _doctorService;
+        public UserController(IUserService userService, SignInManager<User> signInManager, IJwtService jwtService, ICloudinaryService cloudinaryService, IRoleService roleService, IDoctorService doctorService)
         {
             _userService = userService;
             _signInManager = signInManager;
             _jwtService = jwtService;
             _cloudinaryService = cloudinaryService;
             _roleService = roleService;
+            _doctorService = doctorService;
         }
 
         [HttpPost("token/")]
@@ -72,7 +73,7 @@ namespace ClinicWebAPI.Controllers
 
         [HttpPost("addemployee/{role}/")]
         [Authorization("ADMIN")]
-        public async Task<IActionResult> AddEmpoyee([FromQuery] UserDto user, string role)
+        public async Task<IActionResult> AddEmpoyee([FromQuery] UserDto user, string role, string ?specialization)
         {
             if (!ModelState.IsValid)
             {
@@ -81,7 +82,22 @@ namespace ClinicWebAPI.Controllers
             var result = await _cloudinaryService.UploadPhotoToCloudinaryAsync(user.Image);
             user.Avatar = result.Url.ToString();
             var addResult = await _userService.AddAsync(user, user.Password, role);
-
+            for (var i = 0; i < 10; i++)
+                Console.Write('*');
+            Console.WriteLine();
+            Console.WriteLine(addResult.UserName);
+            Console.WriteLine(addResult.Id);
+            for (var i = 0; i < 10; i++)
+                Console.Write('*');
+            if (role == "DOCTOR" && addResult != null)
+            {
+                var doctor = new Doctor
+                {
+                    SpecializationId = specialization,
+                    UserId = addResult.Id
+                };
+                await _doctorService.AddOrUpdateAsync(doctor);
+            }
             return addResult != null ? StatusCode(201, "Thêm Thành Công") : StatusCode(404, ModelState);
         }
 
